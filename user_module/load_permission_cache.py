@@ -18,7 +18,7 @@ def load_permission():
     redis_cli = permission_cache()
     redis_cli.flushdb()
     for n in role_per:
-        redis_cli.set(n,str(role_per[n]))
+        redis_cli.set("role_"+n,str(role_per[n]))
     redis_cli.close()
 
 # 导入系统配置缓存

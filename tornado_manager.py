@@ -8,6 +8,13 @@ from user_module.check_username import check_username
 from user_module.load_permission_cache import load_permission,load_sys_conf_cache
 from common_module.util.invite_code import gen_invite_code
 from user_module.reset_pass import reset_pass
+from user_module.manager_module.user import user
+from user_module.manager_module.user_role import user_role
+from user_module.manager_module.role import role
+from user_module.manager_module.role_permission import role_permission
+from user_module.manager_module.permission import permission
+from user_module.normal_module.user import user as no_user
+from common_module.system_setting import system_setting
 
 def make_app():
     return Application([
@@ -18,6 +25,13 @@ def make_app():
         (r"/api/get_invite_code",get_invite_code),
         (r"/api/cookie_active",cookie_active),
         (r"/api/reset_pass",reset_pass),
+        (r"/api/manage/user",user),
+        (r"/api/manage/user_role",user_role),
+        (r"/api/manage/role",role),
+        (r"/api/manage/role_permission",role_permission),
+        (r"/api/manage/permission",permission),
+        (r"/api/normal/user",no_user),
+        (r"/api/system_setting",system_setting),
     ])
 
 def main(port:int=7890):

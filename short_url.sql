@@ -45,11 +45,9 @@ name varchar(255) not null comment'配置名称',
 sys_v varchar(255) not null comment'配置值',
 PRIMARY KEY(name));
 
-
-
 insert into auth_user(username,password,nickname,email,status) VALUES('admin','$sb40$7caa54ea423e321cf9ffd7d8649aa289afd4b58f259befd1bc7946c81ebac9b571c2ce0d3d854b0f','admin','admin@example.com','启用');
-insert into role(id,name,info) VALUES('0','系统管理员','系统管理员，拥有系统最高权限');
-INSERT into permission(id,name,info) VALUES('0','系统管理权限','系统最高权限');
 insert into user_role(username,roleid) VALUES('admin','0');
 INSERT into role_permission(roleid,permissionid) VALUES('0','0');
+insert into role(id,name,info) VALUES('0','系统管理员','系统管理员，拥有系统最高权限');
+INSERT into permission(id,name,info) VALUES('0','系统管理权限','系统最高权限'),('1','普通用户','普通用户使用权限');
 insert into sys_conf(name,sys_v) VALUES('用户注册','开启'),('注册默认角色','1'),('操作重试次数','5'),('邮箱服务器','smtp.qq.com'),('邮箱端口','587'),('邮箱登录口令',''),('邮箱用户名','admin@example.com'),('注册模式','邀请码'),('域名','127.0.0.1');
