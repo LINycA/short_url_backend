@@ -5,7 +5,7 @@ from user_module.register import register
 from user_module.get_invite_code import get_invite_code
 from common_module.cookie_active import cookie_active
 from user_module.check_username import check_username
-from user_module.load_permission_cache import load_permission,load_sys_conf_cache
+from user_module.load_permission_cache import load_permission,load_sys_conf_cache,load_short_url
 from common_module.util.invite_code import gen_invite_code
 from user_module.reset_pass import reset_pass
 from user_module.manager_module.user import user
@@ -13,8 +13,11 @@ from user_module.manager_module.user_role import user_role
 from user_module.manager_module.role import role
 from user_module.manager_module.role_permission import role_permission
 from user_module.manager_module.permission import permission
+from app.short_url import short_url
 from user_module.normal_module.user import user as no_user
 from common_module.system_setting import system_setting
+from app.short_url_get import short_url_get
+
 
 def make_app():
     return Application([
@@ -32,11 +35,14 @@ def make_app():
         (r"/api/manage/permission",permission),
         (r"/api/normal/user",no_user),
         (r"/api/system_setting",system_setting),
+        (r"/api/short_url",short_url),
+        (r"/.*",short_url_get),
     ])
 
 def main(port:int=7890):
     load_permission() # 检测redis缓存是否开启并载入角色权限
     load_sys_conf_cache() # 载入配置信息至缓存
+    load_short_url() # 导入短链接信息
     gen_invite_code(15) # 生成邀请码，如果是邀请码模式
     app = make_app()
     app.listen(port=port)

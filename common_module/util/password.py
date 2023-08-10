@@ -13,7 +13,7 @@ def gen_salt(passwd:str,length:int=16) -> str:
 def encrypt_passwd(passwd:str) -> str:
     salt = gen_salt(passwd=passwd)
     en_passwd = '$sb'+ str(len(salt)) + '$' + salt + sha1((passwd+salt).encode('utf-8')).hexdigest()
-    print(en_passwd)
+    # print(en_passwd)
     return en_passwd
 
 # 解密密码
@@ -31,6 +31,6 @@ def decrypt_passwd(passwd:str,en_passwd:str) -> bool:
 
 if __name__ == "__main__":
     # gen_salt()
-    en_passwd = encrypt_passwd('admin')
+    en_passwd = encrypt_passwd('arnolin')
     print(len(en_passwd),en_passwd)
-    print(decrypt_passwd(passwd='admin',en_passwd=en_passwd))
+    print(decrypt_passwd(passwd='arnolin',en_passwd=en_passwd))

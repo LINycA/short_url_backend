@@ -1,6 +1,6 @@
 import sys
 sys.path.append('./')
-from common_module.util.connect_redis import permission_cache
+from common_module.util.connect_redis import permission_cache,short_url_cache
 from common_module.util.connect_mysql import exec_sql2dict
 
 # 更新角色权限缓存
@@ -33,6 +33,16 @@ def load_sys_conf_cache():
         redis_cli.set(n,sys_conf_dict[n])
     redis_cli.close()
 
+# 导入短连接
+def load_short_url():
+    sql = 'select username,short_url,real_url from short_url;'
+    res = exec_sql2dict(sql=sql)
+    redis_cli = short_url_cache()
+    for i in res:
+        redis_cli.hset(i.get('username'),i.get('short_url'),i.get('real_url'))
+        redis_cli.set(i.get('short_url'),i.get('real_url'))
+    redis_cli.close()
 
 if __name__ == "__main__":
-    load_permission()
+    # load_permission()
+    load_short_url()

@@ -21,7 +21,7 @@ def check_cookie(obj:object) -> list:
     per_list = []
     for i in roleid_list:
         p_list = redis_cli.get('role_'+i)
-        if p_list != None or p_list != '':
+        if p_list != None and p_list != '':
             for n in eval(p_list):
                 if n not in per_list:
                     per_list.append(n)

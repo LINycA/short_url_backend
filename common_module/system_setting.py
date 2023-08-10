@@ -1,7 +1,8 @@
 import json
 from tornado.web import RequestHandler
-from common_module.util.connect_mysql import exec_sql2dict,exec_many_sql
+from common_module.util.connect_mysql import exec_sql2dict,exec_sql_commit
 from common_module.check_cookie import check_cookie
+from common_module.util.connect_redis import permission_cache
 
 class system_setting(RequestHandler):
     def post(self):
@@ -41,12 +42,15 @@ class system_setting(RequestHandler):
         return res
     # 修改系统设置
     def sys_modify(self,sys_dict:dict) -> int:
-        value_list = []
-        for n in sys_dict:
-            value_list.append([sys_dict[n],n])
         try:
-            sql = 'update sys_conf set sys_v="%s" where name="%s";'
-            res = exec_many_sql(sql=sql,values=value_list)
+            rows = 0
+            redis_cli = permission_cache()
+            for n in sys_dict:
+                sql = f'update sys_conf set sys_v="{sys_dict[n]}" where name="{n}";'
+                res = exec_sql_commit(sql=sql)
+                rows += res
+                redis_cli.set(n,sys_dict[n])
+            redis_cli.close()
         except:
-            res = 0
-        return res
+            rows = 0
+        return rows

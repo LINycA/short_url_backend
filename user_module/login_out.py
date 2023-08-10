@@ -31,7 +31,7 @@ class login(RequestHandler):
                     user_status = res[0].get('status')
                     return decrypt_passwd(password,passwd),nickname,user_status
                 else:
-                    return False,None
+                    return False,None,None
             except:
                 print(format_exc())
 
